@@ -4,7 +4,7 @@
     <div class="header-bar">
       <div class="header-left">
         <h1 class="app-name">{{ appInfo?.appName || '网站生成器' }}</h1>
-        <a-tag v-if="appInfo?.codeGenType" color="blue" class="code-gen-type-tag">
+        <a-tag v-if="appInfo?.codeGenType" color="volcano" class="code-gen-type-tag">
           {{ formatCodeGenType(appInfo.codeGenType) }}
         </a-tag>
       </div>
@@ -904,7 +904,7 @@ onUnmounted(() => {
 }
 
 .user-message .message-content {
-  background: #1890ff;
+  background: linear-gradient(135deg, #ff6b35, #ff8c42);
   color: white;
 }
 
@@ -1086,7 +1086,7 @@ onUnmounted(() => {
     font-family: 'Monaco', 'Menlo', monospace;
     font-size: 14px;
     font-weight: 600;
-    color: #007bff;
+    color: #e8552a;
   }
 
   .element-id {

@@ -40,6 +40,34 @@ html {
   box-shadow: 0 4px 18px rgba(255, 107, 53, 0.45);
 }
 
+/* Ghost 按钮（下载代码） */
+.ant-btn-primary.ant-btn-background-ghost {
+  color: #ff6b35 !important;
+  border-color: #ff6b35 !important;
+  background: transparent !important;
+}
+
+.ant-btn-primary.ant-btn-background-ghost:hover {
+  color: #e8552a !important;
+  border-color: #e8552a !important;
+  background: transparent !important;
+}
+
+/* 默认按钮（应用详情） */
+.ant-btn-default:hover {
+  color: #ff6b35 !important;
+  border-color: #ff6b35 !important;
+}
+
+/* 链接按钮（编辑模式、新窗口打开等） */
+.ant-btn-link {
+  color: #e8552a !important;
+}
+
+.ant-btn-link:hover {
+  color: #ff6b35 !important;
+}
+
 .ant-pagination .ant-pagination-item-active {
   border-color: #ff6b35;
 }
