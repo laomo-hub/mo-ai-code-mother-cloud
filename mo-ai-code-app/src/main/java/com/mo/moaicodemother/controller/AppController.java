@@ -8,6 +8,9 @@ import com.mo.moaicodemother.ratelimter.enums.RateLimitType;
 import com.mo.moaicodemother.service.AppService;
 import com.mo.moaicodemother.service.ProjectDownloadService;
 import com.mo.moaicodemother.innerservice.InnerUserService;
+import com.mo.moaicodemother.agent.AgentClient;
+import com.mo.moaicodemother.agent.dto.VueProjectGenerateRequest;
+import com.mo.moaicodemother.agent.dto.VueProjectGenerateResponse;
 import com.mo.moaicodemother.annotation.AuthCheck;
 import com.mo.moaicodemother.common.BaseResponse;
 import com.mo.moaicodemother.common.DeleteRequest;
@@ -54,6 +57,45 @@ public class AppController {
     @Resource
     private ProjectDownloadService projectDownloadService;
 
+    @Resource
+    private AgentClient agentClient;
+
+
+    /**
+     * 测试调用 Python LangGraph Agent。
+     *
+     * @param appId   应用 ID
+     * @param prompt  用户需求
+     * @param request 请求
+     * @return Python Agent 生成结果
+     */
+    @GetMapping("/test/python-agent")
+    public BaseResponse<VueProjectGenerateResponse> testPythonAgent(@RequestParam Long appId,
+                                                                    @RequestParam String prompt,
+                                                                    HttpServletRequest request) {
+        ThrowUtils.throwIf(appId == null || appId <= 0, ErrorCode.PARAMS_ERROR, "应用 ID 错误");
+        ThrowUtils.throwIf(StrUtil.isBlank(prompt), ErrorCode.PARAMS_ERROR, "提示词不能为空");
+
+        User loginUser = InnerUserService.getLoginUser(request);
+
+        VueProjectGenerateRequest agentRequest = new VueProjectGenerateRequest(
+                appId,
+                loginUser.getId(),
+                prompt
+        );
+
+        VueProjectGenerateResponse response = agentClient.generateVueProject(agentRequest);
+        return ResultUtils.success(response);
+    }
+
+
+    /**
+     * Langchain服务调用
+     * @param appId
+     * @param message
+     * @param request
+     * @return
+     */
     @GetMapping(value = "/chat/gen/code", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @RateLimit(limitType = RateLimitType.USER, rate = 5, rateInterval = 60, message = "AI 对话请求过于频繁，请稍后再试")
     public Flux<ServerSentEvent<String>> chatToGenCode(@RequestParam Long appId,
